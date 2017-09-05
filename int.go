@@ -7,7 +7,7 @@ import (
 	"reflect"
 )
 
-// Int64 is an int64 used for possibly null database columns.
+// Int64 is a possibly invalid int64 type.
 type Int64 struct {
 	sql.NullInt64
 }
@@ -17,7 +17,7 @@ func ValidInt64(value int64) Int64 {
 	return Int64{sql.NullInt64{Int64: value, Valid: true}}
 }
 
-// InvalidInt64 returns a new Int64 that is valid.
+// InvalidInt64 returns a new Int64 that is invalid.
 func InvalidInt64() Int64 {
 	return Int64{sql.NullInt64{Int64: 0, Valid: false}}
 }
@@ -50,7 +50,7 @@ func (null *Int64) UnmarshalJSON(data []byte) error {
 		null.Int64 = 0
 		null.Valid = false
 	default:
-		return fmt.Errorf("Cannot unmarshal %v into NullInt64", reflect.TypeOf(value).Name())
+		return fmt.Errorf("Cannot unmarshal %v into sql.NullInt64", reflect.TypeOf(value).Name())
 	}
 	return nil
 }

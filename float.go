@@ -7,7 +7,7 @@ import (
 	"reflect"
 )
 
-// Float64 is an float64 used for possibly null database columns.
+// Float64 is a possibly invalid float64 type.
 type Float64 struct {
 	sql.NullFloat64
 }
@@ -17,7 +17,7 @@ func ValidFloat64(value float64) Float64 {
 	return Float64{sql.NullFloat64{Float64: value, Valid: true}}
 }
 
-// InvalidFloat64 returns a new Float64 that is valid.
+// InvalidFloat64 returns a new Float64 that is invalid.
 func InvalidFloat64() Float64 {
 	return Float64{sql.NullFloat64{Float64: 0, Valid: false}}
 }
@@ -50,7 +50,7 @@ func (null *Float64) UnmarshalJSON(data []byte) error {
 		null.Float64 = 0
 		null.Valid = false
 	default:
-		return fmt.Errorf("Cannot unmarshal %v into NullFloat64", reflect.TypeOf(value).Name())
+		return fmt.Errorf("Cannot unmarshal %v into sql.NullFloat64", reflect.TypeOf(value).Name())
 	}
 	return nil
 }

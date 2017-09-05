@@ -7,7 +7,7 @@ import (
 	"reflect"
 )
 
-// String is a string used for possibly null database columns.
+// String is a possibly invalid string type.
 type String struct {
 	sql.NullString
 }
@@ -47,7 +47,7 @@ func (null *String) UnmarshalJSON(data []byte) error {
 		null.String = ""
 		null.Valid = false
 	default:
-		return fmt.Errorf("Cannot unmarshal %v into NullString", reflect.TypeOf(value).Name())
+		return fmt.Errorf("Cannot unmarshal %v into sql.NullString", reflect.TypeOf(value).Name())
 	}
 	return nil
 }

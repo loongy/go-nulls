@@ -7,7 +7,7 @@ import (
 	"reflect"
 )
 
-// Bool is an bool used for possibly null database columns.
+// Bool is a possibly invalid boolean type.
 type Bool struct {
 	sql.NullBool
 }
@@ -17,7 +17,7 @@ func ValidBool(value bool) Bool {
 	return Bool{sql.NullBool{Bool: value, Valid: true}}
 }
 
-// InvalidBool returns a new Bool that is valid.
+// InvalidBool returns a new Bool that is invalid.
 func InvalidBool() Bool {
 	return Bool{sql.NullBool{Bool: false, Valid: false}}
 }
@@ -47,7 +47,7 @@ func (null *Bool) UnmarshalJSON(data []byte) error {
 		null.Bool = false
 		null.Valid = false
 	default:
-		return fmt.Errorf("Cannot unmarshal %v into NullBool", reflect.TypeOf(value).Name())
+		return fmt.Errorf("Cannot unmarshal %v into sql.NullBool", reflect.TypeOf(value).Name())
 	}
 	return nil
 }
